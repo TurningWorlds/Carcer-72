@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Carcer '72</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #0d0d0d;
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .hero-section {
+      position: relative;
+      padding-top: 8rem;
+      padding-bottom: 6rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      min-height: auto;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #0d0d0d, transparent, #0d0d0d);
+    }
+
+    .hero-content {
+      max-width: 56rem;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subtitle {
+      color: #f59e0b;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      color: white;
+    }
+
+    .highlight {
+      color: #f59e0b;
+    }
+
+    .hero-description {
+      color: #9ca3af;
+      font-size: 1.125rem;
+      max-width: 42rem;
+      margin: 0 auto;
+      font-weight: 300;
+      line-height: 1.75;
+    }
+
+    .vision-section {
+      padding: 5rem 1.5rem;
+      background-color: #111111;
+    }
+
+    .vision-container {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .vision-text .vision-label {
+      color: #f59e0b;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .vision-text h2 {
+      font-size: 1.875rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      color: white;
+    }
+
+    .vision-text .vision-para {
+      color: #9ca3af;
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+
+    .vision-image-container {
+      position: relative;
+    }
+
+    .vision-image {
+      width: 100%;
+      display: block;
+      filter: grayscale(100%);
+    }
+
+    .vision-image-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, #111111, transparent, transparent);
+    }
+
+    .stats-section {
+      padding: 5rem 1.5rem;
+      background-color: #0d0d0d;
+    }
+
+    .stats-container {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: #f59e0b;
+      margin: 0 auto 1rem;
+      display: block;
+    }
+
+    .stat-value {
+      font-size: 1.875rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .stat-label {
+      color: #6b7280;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .setting-section {
+      padding: 5rem 1.5rem;
+      background-color: #0d0d0d;
+    }
+
+    .setting-container {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .setting-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .setting-header .setting-label {
+      color: #f59e0b;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .setting-header h2 {
+      font-size: 1.875rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    .setting-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .setting-card {
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .setting-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .setting-card p {
+      color: #6b7280;
+      line-height: 1.75;
+    }
+
+    /* Tablet and Desktop */
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 4.5rem;
+      }
+
+      .hero-description {
+        font-size: 1.25rem;
+      }
+
+      .vision-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .vision-text h2 {
+        font-size: 2.25rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .stat-value {
+        font-size: 2.25rem;
+      }
+
+      .setting-header h2 {
+        font-size: 2.25rem;
+      }
+
+      .setting-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-gradient"></div>
+    
+    <div class="hero-content">
+      <p class="subtitle">Our Story</p>
+      <h1 class="hero-title">
+        About <span class="highlight">Carcer '72</span>
+      </h1>
+      <p class="hero-description">
+        Born from a passion for authentic roleplay and the gritty atmosphere of 1970s America, 
+        Carcer '72 brings the infamous city to life like never before.
+      </p>
+    </div>
+  </section>
+  
+  <!-- Vision Section -->
+  <section class="vision-section">
+    <div class="vision-container">
+      <div class="vision-grid">
+        <div class="vision-text">
+          <p class="vision-label">The Vision</p>
+          <h2>
+            A World That Feels <span class="highlight">Real</span>
+          </h2>
+          <p class="vision-para">
+            While other servers focus on modern settings and fast-paced action, we chose a different path. 
+            Carcer '72 is built on the foundation of deep, meaningful roleplay where every interaction matters.
+          </p>
+          <p class="vision-para">
+            Set in 1972, players experience a world without cell phones, without surveillance cameras, 
+            without modern forensics. A world where deals are sealed with handshakes, where reputation 
+            is everything, and where the streets have long memories.
+          </p>
+          <p class="vision-para">
+            Our development team consists of history enthusiasts, roleplay veterans, and talented scripters 
+            who share a singular vision: creating the most immersive 1970s experience possible.
+          </p>
+        </div>
+        
+        <div class="vision-image-container">
+          <img 
+            src="https://images.unsplash.com/photo-1569974507005-6dc61f97fb5c?w=800&q=80"
+            alt="1970s City Street"
+            class="vision-image"
+          />
+          <div class="vision-image-gradient"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stats-container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <p class="stat-value">247+</p>
+          <p class="stat-label">Discord Members</p>
+        </div>
+        
+        <div class="stat-card">
+          <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          <p class="stat-value">15+</p>
+          <p class="stat-label">Unique Districts</p>
+        </div>
+        
+        <div class="stat-card">
+          <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <p class="stat-value">99.8%</p>
+          <p class="stat-label">Server Uptime</p>
+        </div>
+        
+        <div class="stat-card">
+          <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+          </svg>
+          <p class="stat-value">#1</p>
+          <p class="stat-label">Immersive RP</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- The Setting -->
+  <section class="setting-section">
+    <div class="setting-container">
+      <div class="setting-header">
+        <p class="setting-label">The Setting</p>
+        <h2>
+          Carcer City, <span class="highlight">1972</span>
+        </h2>
+      </div>
+      
+      <div class="setting-grid">
+        <div class="setting-card">
+          <h3>The Economy</h3>
+          <p>Nixon's price controls, Vietnam war spending, and the oil crisis loom. Work hard or work dirty—those are your options.</p>
+        </div>
+        
+        <div class="setting-card">
+          <h3>The Politics</h3>
+          <p>Corruption runs deep. City Hall is owned by the mob, the police are on payroll, and elections are bought and sold.</p>
+        </div>
+        
+        <div class="setting-card">
+          <h3>The Streets</h3>
+          <p>Ethnic tensions, gang warfare, and urban decay define daily life. Every block has its own rules and rulers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
