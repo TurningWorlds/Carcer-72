@@ -1,335 +1,645 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
-import { Menu, X, ChevronDown, User, Globe, Mail, MessageSquare } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar - Carcer '72</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-const navLinks = [
-  { name: 'Home', path: 'Home' },
-  { name: 'About', path: 'About' },
-  { name: 'Features', path: 'Features' },
-  { name: 'Factions', path: 'Factions' },
-  { name: 'Media', path: 'Media' },
-  { name: 'Rules', path: 'Rules' },
-];
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #0d0d0d;
+      color: #fff;
+      min-height: 200vh;
+    }
 
-const getStartedLinks = [
-  { name: 'How to Join', path: 'HowToJoin' },
-  { name: 'Applications', path: 'Applications' },
-  { name: 'Wiki', path: 'Wiki' },
-];
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      transition: all 0.3s;
+    }
 
-const communityLinks = [
-  { name: 'Community', path: 'Community' },
-  { name: 'Support', path: 'Support' },
-  { name: 'Contact Us', path: 'ContactUs' },
-];
+    nav.scrolled {
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-const languages = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-];
+    .nav-container {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      position: relative;
+    }
 
-export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showGetStarted, setShowGetStarted] = useState(false);
-  const [showCommunity, setShowCommunity] = useState(false);
-  const [showLanguages, setShowLanguages] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
-  const location = useLocation();
+    .nav-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+      pointer-events: none;
+    }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    .nav-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-  const handleLanguageChange = (lang) => {
-    setSelectedLanguage(lang);
-    setShowLanguages(false);
-    // In a real implementation, this would trigger translation
-    console.log('Language changed to:', lang.code);
-  };
+    .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      z-index: 10;
+    }
 
-  return (
-    <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'
-      }`}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          {/* Gradient background box */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+    .logo .highlight {
+      color: #f59e0b;
+      font-weight: 300;
+    }
+
+    .desktop-nav {
+      display: none;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      color: #d1d5db;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #f59e0b;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-btn {
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      color: #d1d5db;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: color 0.3s;
+      padding: 0;
+    }
+
+    .dropdown-btn:hover {
+      color: white;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 0.5rem;
+      width: 12rem;
+      background-color: rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      display: none;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-menu a,
+    .dropdown-menu button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      color: #d1d5db;
+      text-decoration: none;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dropdown-menu a:hover,
+    .dropdown-menu button:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .dropdown-menu button.active {
+      color: #f59e0b;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .right-actions {
+      display: none;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      color: #d1d5db;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .lang-btn:hover {
+      color: white;
+    }
+
+    .login-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      background: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .login-btn:hover {
+      border-color: rgba(245, 158, 11, 0.5);
+    }
+
+    .login-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 0.5rem;
+      width: 16rem;
+      background-color: rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      padding: 1rem;
+      display: none;
+    }
+
+    .login-menu.show {
+      display: block;
+    }
+
+    .login-menu p {
+      color: #9ca3af;
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .login-menu button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 0.5rem;
+    }
+
+    .discord-btn {
+      background-color: #5865F2;
+    }
+
+    .discord-btn:hover {
+      background-color: #4752C4;
+    }
+
+    .email-btn {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .email-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .mobile-menu-btn {
+      display: block;
+      color: white;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background-color: rgba(0, 0, 0, 0.95);
+      display: none;
+      overflow-y: auto;
+    }
+
+    .mobile-menu.show {
+      display: flex;
+    }
+
+    .mobile-menu-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 1.5rem;
+      padding: 6rem 1.5rem;
+    }
+
+    .mobile-menu-content a {
+      font-size: 1.25rem;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu-content a:hover {
+      color: #f59e0b;
+    }
+
+    .mobile-section {
+      width: 100%;
+      max-width: 20rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .mobile-section-title {
+      color: #6b7280;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .mobile-section a {
+      display: block;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .mobile-section button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 0.75rem;
+    }
+
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+
+    .lang-grid button {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: none;
+      color: #d1d5db;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .lang-grid button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .lang-grid button.active {
+      background-color: #f59e0b;
+      color: white;
+    }
+
+    .icon {
+      width: 1rem;
+      height: 1rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-lg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .desktop-nav,
+      .right-actions {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: none;
+      }
+
+      .dropdown-menu.right {
+        left: auto;
+        right: 0;
+      }
+
+      .dropdown-menu.lang {
+        max-height: 16rem;
+        overflow-y: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <div class="nav-container">
+      <div class="nav-gradient"></div>
+      
+      <div class="nav-content">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+          CARCER <span class="highlight">'72</span>
+        </a>
+        
+        <!-- Desktop Navigation -->
+        <div class="desktop-nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="features.html" class="nav-link">Features</a>
+          <a href="factions.html" class="nav-link">Factions</a>
+          <a href="media.html" class="nav-link">Media</a>
+          <a href="rules.html" class="nav-link">Rules</a>
           
-          <div className="relative flex items-center justify-between">
-            {/* Logo */}
-            <Link to={createPageUrl('Home')} className="text-xl font-bold text-white z-10">
-              CARCER <span className="text-amber-500 font-light">'72</span>
-            </Link>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={createPageUrl(link.path)}
-                  className={`text-sm tracking-wide transition-colors ${
-                    location.pathname.includes(link.path) 
-                      ? 'text-amber-500' 
-                      : 'text-gray-300 hover:text-white'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              
-              {/* Get Started Dropdown */}
-              <div 
-                className="relative"
-                onMouseEnter={() => setShowGetStarted(true)}
-                onMouseLeave={() => setShowGetStarted(false)}
-              >
-                <button className="text-sm tracking-wide text-gray-300 hover:text-white transition-colors flex items-center gap-1">
-                  Get Started
-                  <ChevronDown className="w-3 h-3" />
-                </button>
-                <AnimatePresence>
-                  {showGetStarted && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-48 bg-black/95 border border-white/10 backdrop-blur-md"
-                    >
-                      {getStartedLinks.map((link) => (
-                        <Link
-                          key={link.name}
-                          to={createPageUrl(link.path)}
-                          className="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
-                        >
-                          {link.name}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-              
-              {/* Community Dropdown */}
-              <div 
-                className="relative"
-                onMouseEnter={() => setShowCommunity(true)}
-                onMouseLeave={() => setShowCommunity(false)}
-              >
-                <button className="text-sm tracking-wide text-gray-300 hover:text-white transition-colors flex items-center gap-1">
-                  Community
-                  <ChevronDown className="w-3 h-3" />
-                </button>
-                <AnimatePresence>
-                  {showCommunity && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-48 bg-black/95 border border-white/10 backdrop-blur-md"
-                    >
-                      {communityLinks.map((link) => (
-                        <Link
-                          key={link.name}
-                          to={createPageUrl(link.path)}
-                          className="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
-                        >
-                          {link.name}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-            
-            {/* Right Side Actions */}
-            <div className="hidden lg:flex items-center gap-4">
-              {/* Language Selector */}
-              <div 
-                className="relative"
-                onMouseEnter={() => setShowLanguages(true)}
-                onMouseLeave={() => setShowLanguages(false)}
-              >
-                <button className="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors">
-                  <Globe className="w-4 h-4" />
-                  <span>{selectedLanguage.flag}</span>
-                  <span>{selectedLanguage.name}</span>
-                  <ChevronDown className="w-3 h-3" />
-                </button>
-                <AnimatePresence>
-                  {showLanguages && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full right-0 mt-2 w-48 bg-black/95 border border-white/10 backdrop-blur-md max-h-64 overflow-y-auto"
-                    >
-                      {languages.map((lang) => (
-                        <button
-                          key={lang.code}
-                          onClick={() => handleLanguageChange(lang)}
-                          className={`w-full text-left px-4 py-3 text-sm flex items-center gap-2 transition-colors ${
-                            selectedLanguage.code === lang.code 
-                              ? 'text-amber-500 bg-white/5' 
-                              : 'text-gray-300 hover:text-white hover:bg-white/5'
-                          }`}
-                        >
-                          <span>{lang.flag}</span>
-                          <span>{lang.name}</span>
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-              
-              {/* Login Button */}
-              <div className="relative">
-                <button 
-                  onClick={() => setShowLogin(!showLogin)}
-                  className="flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-amber-500/50 text-white text-sm font-medium tracking-wide transition-all"
-                >
-                  <User className="w-4 h-4" />
-                  Login
-                </button>
-                <AnimatePresence>
-                  {showLogin && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full right-0 mt-2 w-64 bg-black/95 border border-white/10 backdrop-blur-md p-4"
-                    >
-                      <p className="text-gray-400 text-xs mb-4">Choose your login method:</p>
-                      <div className="space-y-2">
-                        <button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white transition-colors">
-                          <MessageSquare className="w-4 h-4" />
-                          Login with Discord
-                        </button>
-                        <button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white transition-colors">
-                          <Mail className="w-4 h-4" />
-                          Login with Email
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-            
-            {/* Mobile Menu Button */}
-            <button 
-              className="lg:hidden text-white p-2 z-10"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <!-- Get Started Dropdown -->
+          <div class="dropdown" id="getStartedDropdown">
+            <button class="dropdown-btn">
+              Get Started
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
+            <div class="dropdown-menu">
+              <a href="how-to-join.html">How to Join</a>
+              <a href="applications.html">Applications</a>
+              <a href="wiki.html">Wiki</a>
+            </div>
+          </div>
+          
+          <!-- Community Dropdown -->
+          <div class="dropdown" id="communityDropdown">
+            <button class="dropdown-btn">
+              Community
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu">
+              <a href="community.html">Community</a>
+              <a href="support.html">Support</a>
+              <a href="contact.html">Contact Us</a>
+            </div>
           </div>
         </div>
-      </nav>
-      
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            className="fixed inset-0 z-40 bg-black/95 lg:hidden overflow-y-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="flex flex-col items-center justify-center min-h-screen gap-6 py-24 px-6">
-              {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link
-                    to={createPageUrl(link.path)}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-xl text-white hover:text-amber-500 transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-              
-              <div className="w-full max-w-xs border-t border-white/10 pt-6 mt-4">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-4 text-center">Get Started</p>
-                {getStartedLinks.map((link, index) => (
-                  <Link
-                    key={link.name}
-                    to={createPageUrl(link.path)}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block text-center text-white hover:text-amber-500 transition-colors py-2"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
-              
-              <div className="w-full max-w-xs border-t border-white/10 pt-6">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-4 text-center">Community</p>
-                {communityLinks.map((link, index) => (
-                  <Link
-                    key={link.name}
-                    to={createPageUrl(link.path)}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block text-center text-white hover:text-amber-500 transition-colors py-2"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
-              
-              <div className="w-full max-w-xs border-t border-white/10 pt-6 space-y-3">
-                <button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white transition-colors">
-                  <MessageSquare className="w-4 h-4" />
-                  Login with Discord
-                </button>
-                <button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white/10 hover:bg-white/20 text-white transition-colors">
-                  <Mail className="w-4 h-4" />
-                  Login with Email
-                </button>
-              </div>
-              
-              <div className="w-full max-w-xs border-t border-white/10 pt-6">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-4 text-center">Language</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => handleLanguageChange(lang)}
-                      className={`px-3 py-2 text-sm flex items-center justify-center gap-2 transition-colors ${
-                        selectedLanguage.code === lang.code 
-                          ? 'bg-amber-500 text-white' 
-                          : 'bg-white/5 text-gray-300 hover:bg-white/10'
-                      }`}
-                    >
-                      <span>{lang.flag}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+        
+        <!-- Right Side Actions -->
+        <div class="right-actions">
+          <!-- Language Selector -->
+          <div class="dropdown" id="languageDropdown">
+            <button class="lang-btn">
+              <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span id="selectedFlag">🇺🇸</span>
+              <span id="selectedLang">English</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu right lang">
+              <button data-lang="en" data-flag="🇺🇸" data-name="English" class="active">🇺🇸 English</button>
+              <button data-lang="es" data-flag="🇪🇸" data-name="Español">🇪🇸 Español</button>
+              <button data-lang="fr" data-flag="🇫🇷" data-name="Français">🇫🇷 Français</button>
+              <button data-lang="de" data-flag="🇩🇪" data-name="Deutsch">🇩🇪 Deutsch</button>
+              <button data-lang="pt" data-flag="🇵🇹" data-name="Português">🇵🇹 Português</button>
+              <button data-lang="ru" data-flag="🇷🇺" data-name="Русский">🇷🇺 Русский</button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
+          </div>
+          
+          <!-- Login Button -->
+          <div class="dropdown" id="loginDropdown">
+            <button class="login-btn">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Login
+            </button>
+            <div class="login-menu">
+              <p>Choose your login method:</p>
+              <button class="discord-btn">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <rect x="3" y="8" width="18" height="12" rx="2"></rect>
+                  <path d="M7 8V6a5 5 0 0 1 10 0v2"></path>
+                </svg>
+                Login with Discord
+              </button>
+              <button class="email-btn">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                Login with Email
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <svg class="icon icon-lg" id="menuIcon" viewBox="0 0 24 24">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg class="icon icon-lg" id="closeIcon" viewBox="0 0 24 24" style="display: none;">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-content">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="features.html">Features</a>
+      <a href="factions.html">Factions</a>
+      <a href="media.html">Media</a>
+      <a href="rules.html">Rules</a>
+      
+      <div class="mobile-section">
+        <p class="mobile-section-title">Get Started</p>
+        <a href="how-to-join.html">How to Join</a>
+        <a href="applications.html">Applications</a>
+        <a href="wiki.html">Wiki</a>
+      </div>
+      
+      <div class="mobile-section">
+        <p class="mobile-section-title">Community</p>
+        <a href="community.html">Community</a>
+        <a href="support.html">Support</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      
+      <div class="mobile-section">
+        <button class="discord-btn">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect x="3" y="8" width="18" height="12" rx="2"></rect>
+            <path d="M7 8V6a5 5 0 0 1 10 0v2"></path>
+          </svg>
+          Login with Discord
+        </button>
+        <button class="email-btn">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          Login with Email
+        </button>
+      </div>
+      
+      <div class="mobile-section">
+        <p class="mobile-section-title">Language</p>
+        <div class="lang-grid" id="mobileLangGrid">
+          <button class="active" data-lang="en" data-flag="🇺🇸" data-name="English">🇺🇸 English</button>
+          <button data-lang="es" data-flag="🇪🇸" data-name="Español">🇪🇸 Español</button>
+          <button data-lang="fr" data-flag="🇫🇷" data-name="Français">🇫🇷 Français</button>
+          <button data-lang="de" data-flag="🇩🇪" data-name="Deutsch">🇩🇪 Deutsch</button>
+          <button data-lang="pt" data-flag="🇵🇹" data-name="Português">🇵🇹 Português</button>
+          <button data-lang="ru" data-flag="🇷🇺" data-name="Русский">🇷🇺 Русский</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Dropdown functionality
+    function setupDropdown(dropdownId) {
+      const dropdown = document.getElementById(dropdownId);
+      const btn = dropdown.querySelector('button');
+      const menu = dropdown.querySelector('.dropdown-menu, .login-menu');
+      
+      dropdown.addEventListener('mouseenter', () => {
+        menu.classList.add('show');
+      });
+      
+      dropdown.addEventListener('mouseleave', () => {
+        menu.classList.remove('show');
+      });
+    }
+
+    setupDropdown('getStartedDropdown');
+    setupDropdown('communityDropdown');
+    setupDropdown('languageDropdown');
+    setupDropdown('loginDropdown');
+
+    // Language selector
+    const langButtons = document.querySelectorAll('[data-lang]');
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const lang = e.currentTarget.dataset.lang;
+        const flag = e.currentTarget.dataset.flag;
+        const name = e.currentTarget.dataset.name;
+        
+        document.getElementById('selectedFlag').textContent = flag;
+        document.getElementById('selectedLang').textContent = name;
+        
+        langButtons.forEach(b => b.classList.remove('active'));
+        document.querySelectorAll(`[data-lang="${lang}"]`).forEach(b => b.classList.add('active'));
+        
+        console.log('Language changed to:', lang);
+      });
+    });
+
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+    const closeIcon = document.getElementById('closeIcon');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('show');
+      if (mobileMenu.classList.contains('show')) {
+        menuIcon.style.display = 'none';
+        closeIcon.style.display = 'block';
+      } else {
+        menuIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+      }
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('show');
+        menuIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>
